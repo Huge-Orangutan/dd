@@ -1,0 +1,27 @@
+name: Build DXGI Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Add MSVC Build Tools to PATH
+      uses: ilammy/msvc-dev-cmd@v1
+
+    - name: Build EXE
+      run: |
+        cl dxgi_test.cpp /EHsc /MD /O2
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: dxgi_test
+        path: dxgi_test.exe
